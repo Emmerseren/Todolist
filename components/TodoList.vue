@@ -99,7 +99,7 @@
       </p>
     </TransitionGroup>
   </div>
-  <div v-if="allTodosCompleted" class="absolute top-0 left-34vw">
+  <div v-if="allTodosCompleted" class="absolute top-0 left-34vw z--1">
     <img src="/img/panda_danser.gif" alt="All todos completed GIF" />
   </div>
 </template>

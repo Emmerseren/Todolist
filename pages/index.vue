@@ -1,5 +1,5 @@
 <template>
-  <div class="panda__grid">
+  <div class="grid grid-cols-2 justify-items-center">
     <img src="/img/panda_går.gif" alt="" />
     <img src="/img/panda_vinker.gif" alt="" />
     <img src="/img/panda_sidder.gif" alt="" />
@@ -11,9 +11,9 @@
 <script setup></script>
 
 <style scoped>
-.panda__grid {
+/*.panda__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
-}
+}*/
 </style>
