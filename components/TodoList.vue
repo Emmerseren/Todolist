@@ -5,13 +5,13 @@
     <div class="mb-5">
       <button
         @click="sortTodoAB"
-        class="bg-sort-btn py-2.5 px-5 mr-3 rounded-2 border-btn border-1"
+        class="bg-sort-btn py-2.5 px-5 mr-3 rounded-2 border-btn border-1 cursor-pointer"
       >
         Sorter a-å
       </button>
       <button
         @click="sortTodoBA"
-        class="bg-sort-btn py-2.5 px-5 rounded-2 border-btn border-1"
+        class="bg-sort-btn py-2.5 px-5 rounded-2 border-btn border-1 cursor-pointer"
       >
         Sorter å-a
       </button>
@@ -45,12 +45,12 @@
             <div class="py-2.5 px-5">
               <button
                 @click="editTodo(todo)"
-                class="py-1.5 px-4 rounded-2 mr-3 border-btn border-1"
+                class="py-1.5 px-4 rounded-2 mr-3 border-btn border-1 cursor-pointer"
               >
                 Rediger
               </button>
               <button
-                class="py-1.5 px-4 rounded-2 text-white bg-delete-btn border-btn border-1"
+                class="py-1.5 px-4 rounded-2 text-white bg-delete-btn border-btn border-1 cursor-pointer"
                 @click="deleteTodo(index)"
               >
                 Slet
@@ -68,7 +68,7 @@
         />
         <button
           @click="addTodo"
-          class="py-2 px-3 rounded-2 border-btn border-1"
+          class="py-2 px-3 rounded-2 border-btn border-1 cursor-pointer"
         >
           Tilføj
         </button>
@@ -81,19 +81,19 @@
     <TransitionGroup name="slide">
       <p
         v-if="taskAddedMessage"
-        class="bg-green-message text-5 py-5 px-10 rounded-2 text-center w-60"
+        class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
       >
         {{ taskAddedMessage }}
       </p>
       <p
         v-if="taskDeletedMessage"
-        class="bg-green-message text-5 py-5 px-10 rounded-2 text-center w-60"
+        class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
       >
         {{ taskDeletedMessage }}
       </p>
       <p
         v-if="taskCompletedMessage"
-        class="bg-green-message text-5 py-5 px-10 rounded-2 text-center w-60"
+        class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
       >
         {{ taskCompletedMessage }}
       </p>

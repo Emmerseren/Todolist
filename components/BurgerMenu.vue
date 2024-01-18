@@ -1,7 +1,7 @@
 <template>
   <div id="burger" class="float-right">
     <div
-      class="burger__icon flex flex-col w-30 h-5.5"
+      class="flex flex-col items-center w-30 h-5.5 cursor-pointer justify-between"
       :class="{ open: isOpen }"
       @click="toggleMenu"
     >
@@ -12,7 +12,7 @@
 
     <div
       v-if="isOpen"
-      class="burger__menu absolute top-25 flex flex-col bg-black ml-30 w-0"
+      class="burger__menu absolute top-25 flex flex-col bg-black ml-30 w-0 z-1"
     >
       <a
         href="/"
@@ -54,18 +54,18 @@ function toggleMenu() {
 /*#burger {
   float: right;
 }*/
-.burger__icon {
-  cursor: pointer;
+/*.burger__icon {
   align-items: center;
   justify-content: space-between;
-  /*display: flex;
+  cursor: pointer;
+  display: flex;
   flex-direction: column;
   width: 30px;
-  height: 22px;*/
-}
+  height: 22px;
+}*/
 
 .burger__bar {
-  /*width: 30px;
+  /* width: 30px;
   height: 4px;
   background-color: #333;
   margin-right: 3vw;
@@ -84,16 +84,16 @@ function toggleMenu() {
   transform: rotate(40deg) translate(-5px, -4px);
 }
 
-.burger__menu {
-  /*top: 90px;
+/*.burger__menu {
+  top: 90px;
   display: flex;
   flex-direction: column;
   position: absolute;
   background-color: black;
   margin-left: 30px;
-  width: 0;*/
+  width: 0;
   z-index: 1;
-}
+}*/
 
 .burger__item {
   /*padding: 40px;
