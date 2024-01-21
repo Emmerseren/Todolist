@@ -23,7 +23,7 @@
         :key="index"
         class="pb-5 list-none text-5 flex flex-wrap w-70"
       >
-        <span :class="{ completed: todo.completed }">
+        <span :class="{ 'font-italic line-through': todo.completed }">
           <input
             v-if="todo.editing"
             v-model="todo.editedTask"
@@ -72,32 +72,20 @@
         >
           Tilføj
         </button>
-        <p v-if="invalidInputMessage" class="pt-2">{{ invalidInputMessage }}</p>
+        <p v-if="toastMessage" class="pt-2">{{ toastMessage }}</p>
       </div>
     </ul>
   </div>
 
   <div class="fixed top-5% left-50% translate--50% -50%">
-    <TransitionGroup name="slide">
+    <Transition name="slide" mode="out-in">
       <p
-        v-if="taskAddedMessage"
+        v-if="toastMessage"
         class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
       >
-        {{ taskAddedMessage }}
+        {{ toastMessage }}
       </p>
-      <p
-        v-if="taskDeletedMessage"
-        class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
-      >
-        {{ taskDeletedMessage }}
-      </p>
-      <p
-        v-if="taskCompletedMessage"
-        class="bg-green-message shadow-xl text-5 py-5 px-10 rounded-2 text-center w-60"
-      >
-        {{ taskCompletedMessage }}
-      </p>
-    </TransitionGroup>
+    </Transition>
   </div>
   <div v-if="allTodosCompleted" class="absolute top-0 left-34vw z--1">
     <img src="/img/panda_danser.gif" alt="All todos completed GIF" />
@@ -105,30 +93,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-
 const newTodo = ref("");
 const todoList = ref([]);
-const taskAddedMessage = ref("");
-const taskDeletedMessage = ref("");
-const taskCompletedMessage = ref("");
-const invalidInputMessage = ref("");
-const allTodosCompleted = ref(false);
-
-function checkAllTodosCompleted() {
-  allTodosCompleted.value =
-    todoList.value.length > 0 && todoList.value.every((todo) => todo.completed);
-}
+const toastMessage = ref("");
+const allTodosCompleted = computed(
+  () =>
+    todoList.value.length > 0 && todoList.value.every((todo) => todo.completed)
+);
 
 function toggleCompleted(index) {
   todoList.value[index].completed = !todoList.value[index].completed;
   saveTodoList();
 
   if (todoList.value[index].completed) {
-    taskCompletedMessage.value = `WOHOO!`;
+    toastMessage.value = `WOHOO!`;
     clearMessages();
   }
-  checkAllTodosCompleted();
 }
 
 function addTodo() {
@@ -140,13 +120,11 @@ function addTodo() {
     todoList.value.push({ id: newId, task: newTodo.value });
     newTodo.value = "";
     saveTodoList();
-    taskAddedMessage.value = "Opgaven blev tilføjet!";
-    clearMessages();
+    toastMessage.value = "Opgaven blev tilføjet!";
   } else {
-    invalidInputMessage.value = "Feltet er tomt";
-    clearMessages();
+    toastMessage.value = "Feltet er tomt";
   }
-  checkAllTodosCompleted();
+  clearMessages();
 }
 
 function deleteTodo(index) {
@@ -157,18 +135,14 @@ function deleteTodo(index) {
     const deletedTask = todoList.value[index].task;
     todoList.value.splice(index, 1);
     saveTodoList();
-    taskDeletedMessage.value = `Opgaven "${deletedTask}" blev slettet!`;
+    toastMessage.value = `Opgaven "${deletedTask}" blev slettet!`;
     clearMessages();
   }
-  checkAllTodosCompleted();
 }
 
 function clearMessages() {
   setTimeout(() => {
-    taskAddedMessage.value = "";
-    taskDeletedMessage.value = "";
-    taskCompletedMessage.value = "";
-    invalidInputMessage.value = "";
+    toastMessage.value = "";
   }, 2000);
 }
 
@@ -209,105 +183,17 @@ onMounted(() => {
   if (savedTodoList) {
     todoList.value = savedTodoList;
   }
-  checkAllTodosCompleted();
 });
 </script>
 
 <style scoped>
-/*h1 {
-  font-size: 2vw;
-  padding-bottom: 1vw;
-}
-
-.todo_list__checkbox {
-  width: 20px;
-  height: 20px;
-}
-
-button {
-  border-radius: 5px;
-  border: 1px solid rgb(100, 100, 100);
-  padding: 0.3vw 1vw 0.3vw 1vw;
-  margin-right: 0.5vw;
-  cursor: pointer;
-  font-size: 0.9vw;
-}
-
-.todo_list_button__sort button {
-  background-color: rgb(147, 177, 214);
-  margin-bottom: 1vw;
-}
-
-.todo_list_task__buttons {
-  padding: 0.3vw 0.7vw;
-}
-
-.todo_list_button__delete {
-  background-color: rgb(250, 57, 57);
-  color: white;
-}
-
-ul {
-  padding-top: 1vw;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
-li {
-  list-style: none;
-  padding-bottom: 1vw;
-  font-size: 1vw;
-}
-
-input {
-  padding: 0.3vw 0.3vw;
-  margin-right: 0.5vw;
-}
-*/
-.completed {
-  text-decoration: line-through;
-  font-style: italic;
-}
-/*
-.todo_list__messages {
-  position: fixed;
-  top: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-} 
-.todo_list__messages p {
-  background-color: #96f8a2;
-  text-align: center;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  font-size: 1.5vw;
-}
-*/
-.slide-enter-active {
-  animation: slide 1s ease;
-}
-
+.slide-enter-active,
 .slide-leave-active {
-  animation: slide 1s ease reverse;
+  transition: transform 0.3s ease;
 }
 
-@keyframes slide {
-  0% {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-
-  50% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.slide-leave-to,
+.slide-enter-from {
+  transform: translateY(-100%);
 }
-/*
-.todo_list__gif {
-  position: absolute;
-  top: 0;
-  margin-left: 30vw;
-}*/
 </style>
